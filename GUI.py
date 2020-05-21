@@ -77,3 +77,4 @@ class Cube:
     def set_temp(self, val):
         pass
 
+#start game
