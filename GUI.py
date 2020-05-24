@@ -30,35 +30,77 @@ class Grid:
 
     #updating the current modal
     def upate_modal(self):
-        pass
+        self.model = [[self.cubes[i][j].value for j in range(sef.cols)] for i in range(self.rows)]
 
     #writing on the board
     def place(self, val):
-        pass
+        row, col = self.selected
+        if self.cubes[row][col].value == 0:
+            self.cues[row][col].set(val)
+            self.update_modal()
+
+            if valid(self.model, val, (row,col)) and solve(self.model):
+                return True
+            else:
+                self.cubes[row][col].set(0)
+                self.cubes[row][col].set_temp(0)
+                self.update_modal()
+                return False
+
 
     #writing the temp val on the board
     def sketch(self, val):
-        pass
+        row, col = self.selected
+        self.cubes[row][col].set_temp(val)
+        
 
     #drawing the grid 
     def draw(self, win):
-        pass
+        #grid lines
+        gap = self.width / 9
+        for i in range(self.rows+1):
+            if i % 3 == 0 and i != 0:
+                thick = 4
+            else:
+                thick = 1
+
+            pygame.draw.line(win, (0,0,0), (0, i*gap), (self.width, i*gap), thick)
+            pygame.draw.line(win, (0, 0, 0), (i * gap, 0), (i * gap, self.height), thick)
+    
+        #drawing cubes
+        for i in range(self.rows):
+            for j in range(self.cols):
+                self.cubes[i][j].draw(win)
 
     #selecting the specific box
     def select(self, row, col):
-        pass
+        for i in range(self.rows):
+            for j in range(self.cols):
+                self.cubes[i][j].draw(win)
 
     #clear the slected box
     def clear(self):
-        pass
+        row, col = self.selected
+        if self.cubes[row][col].value == 0:
+            self.cubes[row][col].set_temp(0)
+
 
     #selecting hte specific box
     def click(self, pos):
-        pass
+        #find the position on the board
+        if pos[0] < self.width and pos[1] < self.height:
+            gap = self.width / 9
+            x = pos[0]
+            y = pos[1]
+            return (int(y), int(x))
+        return None
 
     #game over
     def is_finished(self):
-        pass
+        for i in range(self.rows):
+            for j in range(self.cols):
+                if self.cubes[i][j] == 0:
+                    return False
 
 
 #class for each ubsided box
@@ -122,4 +164,5 @@ def format_time(secs):
     sec = secs%60
     minute = secs//60
     hour = minute//60
+
 #start game
