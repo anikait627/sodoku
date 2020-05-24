@@ -90,7 +90,7 @@ def find_empty(arr):
     return None
 
 
-print_board(board)
-print('--------------------------------------------------------------------')
-solve(board)
-print_board(board)
+# print_board(board)
+# print('--------------------------------------------------------------------')
+# solve(board)
+# print_board(board)
